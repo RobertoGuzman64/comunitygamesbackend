@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
         if(usuarioEncontrado.rol == 1){
             next();
         }else {
-            res.send(`El usuario no es Admin`)
+            res.send(`El usuario no es Administrador`)
         }
     }).catch(error => {
         res.send(error)
