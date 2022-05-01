@@ -5,18 +5,24 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Usuario extends Model {
     /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
+     * Método auxiliar para definir asociaciones.
+     * Este método no forma parte del ciclo de vida de Sequelize.
+     * El archivo `models/index` llamará a este método automáticamente.
      */
     static associate(models) {
       // define association here
     }
   }
   Usuario.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    email: DataTypes.STRING
+    nick: DataTypes.STRING,
+    nombre: DataTypes.STRING,
+    apellidos: DataTypes.STRING,
+    edad: DataTypes.INTEGER,
+    email: DataTypes.STRING,
+    clave: DataTypes.STRING,
+    discord: DataTypes.STRING,
+    juego: DataTypes.STRING,
+    administrador: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Usuario',
