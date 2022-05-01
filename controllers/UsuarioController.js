@@ -64,6 +64,86 @@ class MetodosUsuario {
         });
         return usuarioLogueado;
     }
+    // Método de actualizar el perfil de Usuario con contraseña encriptada.
+    async actualizarUsuario(id, body) {
+        let usuarioActualizado = await Usuario.update(body, { where: { id: id } }).then(usuarioActualizado => {
+            return { status: 200, datos: usuarioActualizado }
+        }).catch(error => {
+            return { status: 400, datos: { error: error.message } }
+        });
+        return usuarioActualizado;
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    // async actualizarUsuario(id, body) {
+    //     let clave = false;
+    //     if (Object.entries(body).length === 0) {
+    //         return {
+    //             status: 422,
+    //             datos: {
+    //                 error: 'Para cambiar los datos del usuario necesita pasar algun dato.',
+    //             }
+    //         }
+    //     } else {
+    //         if (body.clave) {
+    //             delete body.clave;
+    //             clave = true;
+    //         }
+    //         if (body.id) {
+    //             return {
+    //                 status: 422,
+    //                 datos: {
+    //                     error: 'Tu no puedes cambiar el id del usuario'
+    //                 }
+    //             };
+    //         } else if (body.v) {
+    //             return {
+    //                 status: 422,
+    //                 datos: {
+    //                     error: 'Tu no puedes cambiar la version del usuario'
+    //                 }
+    //             };
+    //         }
+    //         let usuarioCambiado = await Usuario.update(id, body,{ new: true }).then(actualizado => {
+    //             if (clave) {
+    //                 return {
+    //                     status: 200,
+    //                     datos: {
+    //                         error: 'Para cambiar la clave necesita de acceder a la sección de cambiar clave.',
+    //                         usuario: actualizado
+    //                     }
+    //                 }
+    //             } else {
+    //                 return {
+    //                     status: 200,
+    //                     datos: {
+    //                         usuario: actualizado
+    //                     }
+    //                 }
+    //             }
+    //         }).catch(error => {
+    //             return {
+    //                 status: 404,
+    //                 datos: {
+    //                     error: error.message
+    //                 }
+    //             }
+    //         })
+    //         return usuarioCambiado;
+    //     }
+    // }
+
 
 
 

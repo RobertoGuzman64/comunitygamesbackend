@@ -26,7 +26,8 @@ module.exports = {
         unique: true
       },
       clave: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        required: true
       },
       discord: {
         type: Sequelize.STRING,

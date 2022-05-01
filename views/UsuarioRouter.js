@@ -45,6 +45,22 @@ router.post("/login", async (req, res) => {
         });
     }
 });
+// PUT
+// Endpoint de actualizarUsuario.
+// http://localhost:5000/usuarios/:id
+router.put("/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const body = req.body;
+        let respuesta = await UsuarioController.actualizarUsuario(id, body);
+        res.status(respuesta.status).json(respuesta.datos);
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message
+        });
+    }
+});
+// DELETE
 
 
 
