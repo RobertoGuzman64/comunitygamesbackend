@@ -8,14 +8,37 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
+      nick: {
         type: Sequelize.STRING
       },
-      lastName: {
+      nombre: {
         type: Sequelize.STRING
+      },
+      apellidos: {
+        type: Sequelize.STRING
+      },
+      edad: {
+        type: Sequelize.INTEGER
       },
       email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
+      },
+      clave: {
         type: Sequelize.STRING
+      },
+      discord: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
+      },
+      juego: {
+        type: Sequelize.STRING
+      },
+      administrador: {
+        type: Sequelize.STRING,
+        defaultValue: false
       },
       createdAt: {
         allowNull: false,
