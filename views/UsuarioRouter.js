@@ -24,6 +24,10 @@ router.post('/login', UsuarioController.login);
 router.put('/:id', auth, UsuarioController.modificarUsuario);
 // http://localhost:5000/usuarios/:id
 
+// Endpoint de Modificar la contraseña ID.
+router.put('/:pk/clave', auth, UsuarioController.modificarClaveUsuario);
+// http://localhost:5000/usuarios/:id/clave
+
 // Endpoint de eliminar todos los Usuarios.
 router.delete('/', auth, isAdmin, UsuarioController.borrarUsuarios);
 // http://localhost:5000/usuarios
