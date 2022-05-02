@@ -4,17 +4,17 @@ const auth = require("../middlewares/auth");
 const isAdmin = require("../middlewares/isAdmin");
 const UsuarioController = require('../controllers/UsuarioController');
 
-// Endpoint de lista de todos los Usuarios.
+// Endpoint de mostrar todos los Usuarios.
 router.get('/', auth, UsuarioController.verUsuarios);
-// http://localhost:5000/usuarios/
+// http://localhost:5000/usuarios
 
-// Endpoint de busqueda de un Usuario por ID.
-router.get('/:id', auth,isAdmin, UsuarioController.verUsuarioId);
+// Endpoint de ver un Usuario por ID.
+router.get('/:id', auth, isAdmin, UsuarioController.verUsuarioId);
 // http://localhost:5000/usuarios/id
 
 // Endpoint de registrar Usuario.
 router.post('/', UsuarioController.crearUsuario);
-// http://localhost:5000/usuarios/registro
+// http://localhost:5000/usuarios
 
 // Endpoint de Login de Usuario.
 router.post('/login', UsuarioController.login);
@@ -24,9 +24,9 @@ router.post('/login', UsuarioController.login);
 router.put('/:id', auth, UsuarioController.modificarUsuario);
 // http://localhost:5000/usuarios/:id
 
-// Endpoint de borrar todos los Usuarios.
+// Endpoint de eliminar todos los Usuarios.
 router.delete('/', auth, isAdmin, UsuarioController.borrarUsuarios);
-// http://localhost:5000/usuarios/
+// http://localhost:5000/usuarios
 
 // Endpoint de eliminar un Usuario por ID.
 router.delete('/:pk', auth, isAdmin, UsuarioController.borrarUsuarioId);

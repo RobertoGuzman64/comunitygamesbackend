@@ -5,7 +5,26 @@ const authConfig = require('../config/auth');
 const jwt = require('jsonwebtoken');
 const UsuarioController = {};
 
-// Función de registro de usuario.
+
+// Función de mostrar todos los Usuarios.
+UsuarioController.verUsuarios = (req, res) => {
+    Usuario.findAll()
+        .then(data => {
+            res.send(data)
+        });
+};
+
+// Función de ver un Usuario por ID.
+UsuarioController.verUsuarioId = (req, res) => {
+    let id = req.params.id;
+    Usuario.findOne({
+        where: { id: id }
+    }).then(data => {
+        res.send(data)
+    });
+};
+
+// Función de registrar Usuario.
 UsuarioController.crearUsuario = async (req, res) => {
     let nick = req.body.nick;
     let nombre = req.body.nombre;
@@ -55,43 +74,7 @@ UsuarioController.crearUsuario = async (req, res) => {
     });
 };
 
-// Función de editar el Perfil.
-UsuarioController.modificarUsuario = async (req, res) => {
-    let datos = req.body;
-    let id = req.params.id;
-    try {
-        Usuario.update(datos, {
-            where: { id: id }
-        }).then(modificarUsuario => {
-            res.status(200).json({ msg: `Usuario con el id ${id} a sido Actualizado.`, usuario: modificarUsuario });
-        }).catch(error => res.status(422).json({ msg: `Ocurrió algo inesperado al obtener los datos del usuario.`, error: { name: error.name, message: error.message, detail: error } }));
-    } catch (error) {
-        res.status(422).json({ msg: `Ocurrió algo inesperado al obtener los datos del usuario.`, error: { name: error.name, message: error.message, detail: error } });
-    }
-}
-
-// Función de borrar un usuario por ID.
-UsuarioController.borrarUsuarioId = async (req, res) => {
-    let id = req.params.pk;
-    try {
-        Usuario.findOne({
-            where: { id: id },
-        }).then(usuario => {
-            if (usuario) {
-                usuario.destroy({
-                    truncate: false
-                })
-                res.status(200).json({ msg: `El Usuario con la id ${id} a sido eliminado.` });
-            } else {
-                res.status(404).json({ msg: `El Usuario con la id ${id} No existe` })
-            }
-        });
-    } catch (error) {
-        res.send(error);
-    }
-}
-
-// Función de Login de usuario
+// Función de Login de Usuario.
 UsuarioController.login = (req, res) => {
     let email = req.body.email;
     let clave = req.body.clave;
@@ -119,25 +102,22 @@ UsuarioController.login = (req, res) => {
     })
 };
 
-// Función de mostrar listado de todos los Usuarios registrados.
-UsuarioController.verUsuarios = (req, res) => {
-    Usuario.findAll()
-        .then(data => {
-            res.send(data)
-        });
-};
-
-// Función de ver un Usuario por ID.
-UsuarioController.verUsuarioId = (req, res) => {
+// Función de Modificar el perfil por ID.
+UsuarioController.modificarUsuario = async (req, res) => {
+    let datos = req.body;
     let id = req.params.id;
-    Usuario.findOne({
-        where: { id: id }
-    }).then(data => {
-        res.send(data)
-    });
-};
+    try {
+        Usuario.update(datos, {
+            where: { id: id }
+        }).then(modificarUsuario => {
+            res.status(200).json({ msg: `Usuario con el id ${id} a sido Actualizado.`, usuario: modificarUsuario });
+        }).catch(error => res.status(422).json({ msg: `Ocurrió algo inesperado al obtener los datos del usuario.`, error: { name: error.name, message: error.message, detail: error } }));
+    } catch (error) {
+        res.status(422).json({ msg: `Ocurrió algo inesperado al obtener los datos del usuario.`, error: { name: error.name, message: error.message, detail: error } });
+    }
+}
 
-// Funcion de borrar todos los Usuarios.
+// Funcion de eliminar todos los Usuarios.
 UsuarioController.borrarUsuarios = async (req, res) => {
     try {
         Usuario.destroy({
@@ -152,5 +132,25 @@ UsuarioController.borrarUsuarios = async (req, res) => {
     }
 };
 
+// Función de eliminar un usuario por ID.
+UsuarioController.borrarUsuarioId = async (req, res) => {
+    let id = req.params.pk;
+    try {
+        Usuario.findOne({
+            where: { id: id },
+        }).then(usuario => {
+            if (usuario) {
+                usuario.destroy({
+                    truncate: false
+                })
+                res.status(200).json({ msg: `El Usuario con la id ${id} a sido eliminado.` });
+            } else {
+                res.status(404).json({ msg: `El Usuario con la id ${id} No existe` })
+            }
+        });
+    } catch (error) {
+        res.send(error);
+    }
+}
 
 module.exports = UsuarioController;
