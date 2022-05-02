@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class comunidad extends Model {
+  class Comunidad extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,9 +11,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.Usuario, {
+        foreignKey: 'usuario_id'
+      });
+      this.belongsTo(models.Miembro, {
+        foreignKey: 'miembro_id'
+      });
     }
   }
-  comunidad.init({
+  Comunidad.init({
+    usuario_id: DataTypes.INTEGER,
+    miembro_id: DataTypes.INTEGER,
     titulo: DataTypes.STRING,
     imagen: DataTypes.STRING,
     genero: DataTypes.STRING,
@@ -22,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     descripcion: DataTypes.TEXT,
   }, {
     sequelize,
-    modelName: 'comunidad',
+    modelName: 'Comunidad',
   });
-  return comunidad;
+  return Comunidad;
 };
