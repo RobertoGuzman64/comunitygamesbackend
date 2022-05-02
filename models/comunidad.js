@@ -14,9 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   comunidad.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    email: DataTypes.STRING
+    titulo: DataTypes.STRING,
+    imagen: DataTypes.STRING,
+    genero: DataTypes.STRING,
+    fecha: DataTypes.DATE,
+    popularidad: DataTypes.FLOAT,
+    descripcion: DataTypes.TEXT,
   }, {
     sequelize,
     modelName: 'comunidad',
