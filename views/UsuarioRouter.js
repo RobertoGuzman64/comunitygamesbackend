@@ -4,69 +4,32 @@ const auth = require("../middlewares/auth");
 const isAdmin = require("../middlewares/isAdmin");
 const UsuarioController = require('../controllers/UsuarioController');
 
-// POST
-// Endpoint de crearUsuario.
-// http://localhost:5000/usuarios
-router.post("/", async (req, res) => {
-    try {
-        const body = req.body;
-        let respuesta = await UsuarioController.crearUsuario(body);
-        res.status(respuesta.status).json(respuesta.datos);
-    } catch (error) {
-        return res.status(400).json({
-            message: error.message
-        });
-    }
-});
-// GET
-// Endpoint de mostrarUsuarios.
-// http://localhost:5000/usuarios
-router.get("/", async (req, res) => {
-    try {
-        let respuesta = await UsuarioController.mostrarUsuarios();
-        res.status(respuesta.status).json(respuesta.datos);
-    } catch (error) {
-        return res.status(400).json({
-            message: error.message
-        });
-    }
-});
-// POST
-// Endpoint de login.
+// Endpoint de lista de todos los Usuarios.
+router.get('/', auth, UsuarioController.verUsuarios);
+// http://localhost:5000/usuarios/
+
+// Endpoint de busqueda de un Usuario por ID.
+router.get('/:id', auth,isAdmin, UsuarioController.verUsuarioId);
+// http://localhost:5000/usuarios/id
+
+// Endpoint de registrar Usuario.
+router.post('/', UsuarioController.crearUsuario);
+// http://localhost:5000/usuarios/registro
+
+// Endpoint de Login de Usuario.
+router.post('/login', UsuarioController.login);
 // http://localhost:5000/usuarios/login
-router.post("/login", async (req, res) => {
-    try {
-        const body = req.body;
-        let respuesta = await UsuarioController.login(body);
-        res.status(respuesta.status).json(respuesta.datos);
-    } catch (error) {
-        return res.status(400).json({
-            message: error.message
-        });
-    }
-});
-// PUT
-// Endpoint de actualizarUsuario.
+
+// Endpoint de Modificar el perfil por ID.
+router.put('/:id', auth, UsuarioController.modificarUsuario);
 // http://localhost:5000/usuarios/:id
-router.put("/:id", async (req, res) => {
-    try {
-        const id = req.params.id;
-        const body = req.body;
-        let respuesta = await UsuarioController.actualizarUsuario(id, body);
-        res.status(respuesta.status).json(respuesta.datos);
-    } catch (error) {
-        return res.status(400).json({
-            message: error.message
-        });
-    }
-});
-// DELETE
 
+// Endpoint de borrar todos los Usuarios.
+router.delete('/', auth, isAdmin, UsuarioController.borrarUsuarios);
+// http://localhost:5000/usuarios/
 
-
-
-
-
-
+// Endpoint de eliminar un Usuario por ID.
+router.delete('/:pk', auth, isAdmin, UsuarioController.borrarUsuarioId);
+// http://localhost:5000/usuarios/:id
 
 module.exports = router;

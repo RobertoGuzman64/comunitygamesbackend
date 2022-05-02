@@ -3,157 +3,154 @@ const { Op } = require("sequelize");
 const bcrypt = require('bcrypt');
 const authConfig = require('../config/auth');
 const jwt = require('jsonwebtoken');
+const UsuarioController = {};
 
-class MetodosUsuario {
-    constructor() {
-    }
-    // Método de crear un Usuario.
-    async crearUsuario(body) {
-        body.clave = bcrypt.hashSync(body.clave, Number.parseInt(authConfig.rondas));
-        let usuarioNuevo = await Usuario.create(body).then(usuarioNuevo => {
-            return { status: 201, datos: usuarioNuevo }
-        }).catch(error => {
-            return { status: 400, datos: { error: error.message } }
-        });
-        return usuarioNuevo;
-    }
-    // Método mostrar los Usuarios.
-    async mostrarUsuarios(req, res) {
-        let usuarios = await Usuario.findAll().then(usuarios => {
-            return { status: 200, datos: usuarios }
-        }).catch(error => {
-            return { status: 400, datos: { error: error.message } }
-        });
-        return usuarios;
-    }
-    // Método de login.
-    async login(body) {
-        let email = body.email;
-        let clave = body.clave;
-        
-        const usuarioLogueado = await Usuario.findOne({where:{ email: email }}).then(usuarioEncontrado => {
-            if (!usuarioEncontrado) {
-                return { // No existe Usuario
-                    status: 401,
-                    datos: {
-                        msg: "Usuario o contraseña inválido"
+// Función de registro de usuario.
+UsuarioController.crearUsuario = async (req, res) => {
+    let nick = req.body.nick;
+    let nombre = req.body.nombre;
+    let apellidos = req.body.apellidos;
+    let edad = req.body.edad;
+    let email = req.body.email;
+    let clave = bcrypt.hashSync(req.body.clave, Number.parseInt(authConfig.rondas));
+    let discord = req.body.discord;
+    let juego = req.body.juego;
+    Usuario.findAll({
+        where: {
+            [Op.or]: [
+                {
+                    email: {
+                        [Op.like]: email
+                    }
+                },
+                {
+                    nick: {
+                        [Op.like]: nick
                     }
                 }
-            } else {
-                // Comprueba clave
-                if (bcrypt.compareSync(clave, usuarioEncontrado.clave)) {
-                    let token = jwt.sign({ usuario: usuarioEncontrado }, authConfig.complemento, {
-                        expiresIn: authConfig.expiracion
-                    });
-                    return { //clave correcta
-                        status: 200,
-                        datos: {
-                            usuario: usuarioEncontrado,
-                            token
-                        }
-                    }
-                } else {
-                    return { // clave incorrecta
-                        status: 401,
-                        datos: {
-                            msg: "Usuario o contraseña inválido"
-                        }
-                    };
-                }
-            };
-        });
-        return usuarioLogueado;
+            ]
+        }
+    }).then(datosRepetidos => {
+        if (datosRepetidos == 0) {
+            Usuario.create({
+                nick: nick,
+                nombre: nombre,
+                apellidos: apellidos,
+                edad: edad,
+                email: email,
+                clave: clave,
+                discord: discord,
+                juego: juego,
+            }).then(usuario => {
+                res.send(`${usuario.nombre}, bienvenid@ a nuestra app de Comunidades de Juegos`);
+            })
+                .catch((error) => {
+                    res.send(error);
+                });
+        } else {
+            res.send("El usuario con ese e-mail ya existe en nuestra base de datos");
+        }
+    }).catch(error => {
+        res.send(error)
+    });
+};
+
+// Función de editar el Perfil.
+UsuarioController.modificarUsuario = async (req, res) => {
+    let datos = req.body;
+    let id = req.params.id;
+    try {
+        Usuario.update(datos, {
+            where: { id: id }
+        }).then(modificarUsuario => {
+            res.status(200).json({ msg: `Usuario con el id ${id} a sido Actualizado.`, usuario: modificarUsuario });
+        }).catch(error => res.status(422).json({ msg: `Ocurrió algo inesperado al obtener los datos del usuario.`, error: { name: error.name, message: error.message, detail: error } }));
+    } catch (error) {
+        res.status(422).json({ msg: `Ocurrió algo inesperado al obtener los datos del usuario.`, error: { name: error.name, message: error.message, detail: error } });
     }
-    // Método de actualizar el perfil de Usuario con contraseña encriptada.
-    async actualizarUsuario(id, body) {
-        let usuarioActualizado = await Usuario.update(body, { where: { id: id } }).then(usuarioActualizado => {
-            return { status: 200, datos: usuarioActualizado }
-        }).catch(error => {
-            return { status: 400, datos: { error: error.message } }
-        });
-        return usuarioActualizado;
-    }
-    
-
-
-
-
-
-
-
-
-
-
-
-
-    // async actualizarUsuario(id, body) {
-    //     let clave = false;
-    //     if (Object.entries(body).length === 0) {
-    //         return {
-    //             status: 422,
-    //             datos: {
-    //                 error: 'Para cambiar los datos del usuario necesita pasar algun dato.',
-    //             }
-    //         }
-    //     } else {
-    //         if (body.clave) {
-    //             delete body.clave;
-    //             clave = true;
-    //         }
-    //         if (body.id) {
-    //             return {
-    //                 status: 422,
-    //                 datos: {
-    //                     error: 'Tu no puedes cambiar el id del usuario'
-    //                 }
-    //             };
-    //         } else if (body.v) {
-    //             return {
-    //                 status: 422,
-    //                 datos: {
-    //                     error: 'Tu no puedes cambiar la version del usuario'
-    //                 }
-    //             };
-    //         }
-    //         let usuarioCambiado = await Usuario.update(id, body,{ new: true }).then(actualizado => {
-    //             if (clave) {
-    //                 return {
-    //                     status: 200,
-    //                     datos: {
-    //                         error: 'Para cambiar la clave necesita de acceder a la sección de cambiar clave.',
-    //                         usuario: actualizado
-    //                     }
-    //                 }
-    //             } else {
-    //                 return {
-    //                     status: 200,
-    //                     datos: {
-    //                         usuario: actualizado
-    //                     }
-    //                 }
-    //             }
-    //         }).catch(error => {
-    //             return {
-    //                 status: 404,
-    //                 datos: {
-    //                     error: error.message
-    //                 }
-    //             }
-    //         })
-    //         return usuarioCambiado;
-    //     }
-    // }
-
-
-
-
-
-
-
-
-
-
-
 }
-let UsuarioController = new MetodosUsuario();
+
+// Función de borrar un usuario por ID.
+UsuarioController.borrarUsuarioId = async (req, res) => {
+    let id = req.params.pk;
+    try {
+        Usuario.findOne({
+            where: { id: id },
+        }).then(usuario => {
+            if (usuario) {
+                usuario.destroy({
+                    truncate: false
+                })
+                res.status(200).json({ msg: `El Usuario con la id ${id} a sido eliminado.` });
+            } else {
+                res.status(404).json({ msg: `El Usuario con la id ${id} No existe` })
+            }
+        });
+    } catch (error) {
+        res.send(error);
+    }
+}
+
+// Función de Login de usuario
+UsuarioController.login = (req, res) => {
+    let email = req.body.email;
+    let clave = req.body.clave;
+    Usuario.findOne({
+        where: { email: email }
+    }).then(element => {
+        if (!element) {
+            res.send("Usuario o contraseña inválido");
+        } else {
+            if (bcrypt.compareSync(clave, element.clave)) {
+                console.log(element.clave);
+                let token = jwt.sign({ usuario: element }, authConfig.complemento, {
+                    expiresIn: authConfig.expiracion
+                });
+                res.json({
+                    usuario: element,
+                    token: token
+                })
+            } else {
+                res.status(401).json({ msg: "Usuario o contraseña inválido" });
+            }
+        };
+    }).catch(error => {
+        res.send(error);
+    })
+};
+
+// Función de mostrar listado de todos los Usuarios registrados.
+UsuarioController.verUsuarios = (req, res) => {
+    Usuario.findAll()
+        .then(data => {
+            res.send(data)
+        });
+};
+
+// Función de ver un Usuario por ID.
+UsuarioController.verUsuarioId = (req, res) => {
+    let id = req.params.id;
+    Usuario.findOne({
+        where: { id: id }
+    }).then(data => {
+        res.send(data)
+    });
+};
+
+// Funcion de borrar todos los Usuarios.
+UsuarioController.borrarUsuarios = async (req, res) => {
+    try {
+        Usuario.destroy({
+            where: {},
+            truncate: false
+        })
+            .then(usuariosEliminados => {
+                res.send(`Se han eliminado ${usuariosEliminados} usuarios`);
+            })
+    } catch (error) {
+        res.send(error);
+    }
+};
+
+
 module.exports = UsuarioController;
