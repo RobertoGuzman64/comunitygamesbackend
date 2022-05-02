@@ -116,8 +116,42 @@ UsuarioController.modificarUsuario = async (req, res) => {
         res.status(422).json({ msg: `Ocurrió algo inesperado al obtener los datos del usuario.`, error: { name: error.name, message: error.message, detail: error } });
     }
 }
+// Función de Modificar la contraseña por ID.
+UsuarioController.modificarClaveUsuario = (req, res) => {
+    let id = req.params.pk;
+    let claveAnterior = req.body.claveAnterior;
+    let claveNueva = req.body.claveNueva;
+    Usuario.findOne({
+        where: { id: id }
+    }).then(usuarioEncontrado => {
+        if (usuarioEncontrado) {
+            if (bcrypt.compareSync(claveAnterior, usuarioEncontrado.clave)) {
+                claveNueva = bcrypt.hashSync(claveNueva, Number.parseInt(authConfig.rondas));
+                let data = {
+                    clave: claveNueva
+                }
+                usuarioEncontrado.update(data, {})
+                    .then(actualiza => {
+                        res.send(actualiza);
+                    })
+                    .catch((error) => {
+                        res.status(400).json({
+                            msg: `Ocurrió algún error al actualizar la contraseña.`,
+                            error: error
+                        });
+                    });
+            } else {
+                res.status(401).json({ msg: "Usuario o contraseña inválidos." });
+            }
+        } else {
+            res.status(404).send(`Usuario no encontrado.`);
+        }
+    }).catch((error => {
+        res.status(400).json({ msg: `sucedió algo inesperado.`, error: { name: error.name, message: error.message } });
+    }));
+};
 
-// Funcion de eliminar todos los Usuarios.
+// Función de eliminar todos los Usuarios.
 UsuarioController.borrarUsuarios = async (req, res) => {
     try {
         Usuario.destroy({
