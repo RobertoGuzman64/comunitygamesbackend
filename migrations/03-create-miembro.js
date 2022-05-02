@@ -8,14 +8,31 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
-        type: Sequelize.STRING
+      usuario_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Usuarios',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-      lastName: {
-        type: Sequelize.STRING
+      comunidad_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Comunidades',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
-      email: {
-        type: Sequelize.STRING
+      motivo: {
+        type: Sequelize.TEXT
+      },
+      fecha: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,

@@ -11,12 +11,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.hasMany(models.Comunidad, {
+        foreignKey: 'miembro_id'
+      });
+      this.belongsTo(models.Comunidad, {
+        foreignKey: 'comunidad_id'
+      });
+      this.belongsTo(models.Usuario, {
+        foreignKey: 'usuario_id'
+      });
     }
   }
   Miembro.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    email: DataTypes.STRING
+    usuario_id: DataTypes.INTEGER,
+    comunidad_id: DataTypes.INTEGER,
+    motivo: DataTypes.TEXT,
+    fecha: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Miembro',
