@@ -14,17 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Miembro, {
         foreignKey: 'comunidad_id'
       });
-      this.belongsTo(models.Usuario, {
-        foreignKey: 'usuario_id'
-      });
-      this.belongsTo(models.Miembro, {
-        foreignKey: 'miembro_id'
-      });
     }
   }
   Comunidad.init({
-    usuario_id: DataTypes.INTEGER,
-    miembro_id: DataTypes.INTEGER,
     titulo: DataTypes.STRING,
     imagen: DataTypes.STRING,
     genero: DataTypes.STRING,
