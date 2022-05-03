@@ -8,21 +8,21 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      usuario_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Usuarios',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
       comunidad_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'Comunidades',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
+      usuario_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Usuarios',
           key: 'id'
         },
         onUpdate: 'CASCADE',

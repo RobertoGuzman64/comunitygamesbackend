@@ -5,9 +5,9 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Comunidad extends Model {
     /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
+     * Método auxiliar para definir asociaciones.
+     * Este método no forma parte del ciclo de vida de Sequelize.
+     * El archivo `models/index` llamará a este método automáticamente.
      */
     static associate(models) {
       // define association here
@@ -17,6 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Comunidad.init({
+    usuario_id: DataTypes.INTEGER,
+    miembro_id: DataTypes.INTEGER,
     titulo: DataTypes.STRING,
     imagen: DataTypes.STRING,
     genero: DataTypes.STRING,
