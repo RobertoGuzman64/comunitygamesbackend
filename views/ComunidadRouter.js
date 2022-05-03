@@ -14,7 +14,7 @@ router.get('/:id', auth, ComunidadController.verComunidadId);
 
 // Endpoint de crear una Comunidad.
 router.post('/', auth, isAdmin, ComunidadController.crearComunidad);
-// http://localhost:5000/comunidades/
+// http://localhost:5000/comunidades
 
 // Endpoint de Modificar la Comunidad por ID.
 router.put('/:id', auth, isAdmin, ComunidadController.modificarComunidad);
@@ -27,15 +27,5 @@ router.delete('/', auth, isAdmin, ComunidadController.borrarComunidades);
 // Endpoint de eliminar una Comunidad por ID.
 router.delete('/:pk', auth, isAdmin, ComunidadController.borrarComunidadId);
 // http://localhost:5000/comunidades/:id
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router;

@@ -7,21 +7,27 @@ const ComunidadController = {};
 
 // Función de mostrar todas las Comunidades.
 ComunidadController.verComunidades = (req, res) => {
-    Comunidad.findAll()
-        .then(data => {
-            res.send(data)
-        });
-};
+    try {
+        Comunidad.findAll()
+            .then(datos => {
+                res.send(datos);
+            });
+    } catch (err) {
+        res.send(err);
+    }
+}
 
 // Función de ver una Comunidad por ID.
 ComunidadController.verComunidadId = (req, res) => {
-    let id = req.params.id;
-    Comunidad.findOne({
-        where: { id: id }
-    }).then(data => {
-        res.send(data)
-    });
-};
+    try {
+        Comunidad.findByPk(req.params.id)
+            .then(datos => {
+                res.send(datos)
+            });
+    } catch (error) {
+        res.send(error);
+    }
+}
 
 // Función de crear una Comunidad.
 ComunidadController.crearComunidad = (req, res) => {
