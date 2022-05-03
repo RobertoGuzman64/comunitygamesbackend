@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Comunidades',
+          model: 'Comunidads',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -28,8 +28,15 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
+      nick: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       motivo: {
         type: Sequelize.TEXT
+      },
+      avatar: {
+        type: Sequelize.STRING
       },
       fecha: {
         type: Sequelize.DATE
