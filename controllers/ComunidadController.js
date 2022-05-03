@@ -29,6 +29,23 @@ ComunidadController.verComunidadId = (req, res) => {
     }
 }
 
+// Función de buscar Comunidades por género.
+ComunidadController.verComunidadGenero = (req, res) => {
+    try {
+        Comunidad.findAll({
+            where: {
+                genero: req.params.genero
+            }
+        })
+            .then(datos => {
+                res.send(datos);
+            });
+    } catch (error) {
+        res.send(error);
+    }
+}
+
+
 // Función de crear una Comunidad.
 ComunidadController.crearComunidad = (req, res) => {
     try {
@@ -66,7 +83,7 @@ ComunidadController.crearComunidad = (req, res) => {
 // Función de modificar la Comunidad por ID.
 ComunidadController.modificarComunidad = (req, res) => {
     let datos = req.body;
-    let id = req.params.pk;
+    let id = req.params.id;
     try {
         if (datos.titulo) {
             Comunidad.findOne({
