@@ -14,13 +14,18 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Comunidad,{
         foreignKey: 'comunidad_id'
       });
+      this.hasMany(models.Amigo,{
+        foreignKey: 'amigo_id'
+      });
     }
   }
   Mensaje.init({
     comunidad_id: DataTypes.INTEGER,
     miembro_id: DataTypes.INTEGER,
+    amigo_id: DataTypes.INTEGER,
     mensaje: DataTypes.TEXT,
     fecha: DataTypes.DATE,
+    hora: DataTypes.TIME
   }, {
     sequelize,
     modelName: 'Mensaje',

@@ -28,11 +28,24 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
+      amigo_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Amigos',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
       mensaje: {
         type: Sequelize.TEXT
       },
       fecha: {
         type: Sequelize.DATE
+      },
+      hora: {
+        type: Sequelize.TIME
       },
       createdAt: {
         allowNull: false,

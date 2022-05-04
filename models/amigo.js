@@ -11,10 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.Usuario, {
+        foreignKey: 'usuario_id'
+      });
+      this.hasMany(models.Mensaje, {
+        foreignKey: 'amigo_id'
+      });
     }
   }
   Amigo.init({
-    motivo: DataTypes.TEXT,
+    usuario_id: DataTypes.INTEGER,
     fecha: DataTypes.DATE,
   }, {
     sequelize,
