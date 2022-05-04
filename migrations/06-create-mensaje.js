@@ -10,7 +10,7 @@ module.exports = {
       },
       comunidad_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Comunidads',
           key: 'id'
@@ -20,7 +20,7 @@ module.exports = {
       },
       miembro_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Miembros',
           key: 'id'
@@ -30,7 +30,7 @@ module.exports = {
       },
       amigo_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Amigos',
           key: 'id'

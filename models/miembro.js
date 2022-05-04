@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Usuario, {
         foreignKey: 'usuario_id'
       });
-      this.belongsTo(models.Mensaje, {
+      this.hasMany(models.Mensaje, {
         foreignKey: 'miembro_id'
       });
     }

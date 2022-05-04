@@ -45,7 +45,6 @@ ComunidadController.verComunidadGenero = (req, res) => {
     }
 }
 
-
 // Función de crear una Comunidad.
 ComunidadController.crearComunidad = (req, res) => {
     try {
@@ -134,7 +133,7 @@ ComunidadController.borrarComunidades = (req, res) => {
 
 // Función de eliminar una Comunidad por ID.
 ComunidadController.borrarComunidadId = async (req, res) => {
-    let id = req.params.pk;
+    let id = req.params.id;
     try {
         Comunidad.findOne({
             where: { id: id },

@@ -21,18 +21,24 @@ router.post('/amigo', auth, MensajeController.crearMensajeAmigo);
 // http://localhost:5000/mensajes/amigo
 
 // Endpoint de modificar un Mensaje de un Miembro de Comunidad.
-router.put('/miembro/:id/:id/:id', auth, MensajeController.modificarMensajeMiembro);
-// http://localhost:5000/mensajes/miembro/:id/:id
+router.put('/miembro/:id', auth, MensajeController.modificarMensajeMiembro);
+// http://localhost:5000/mensajes/miembro/:id
 
 // Endpoint de modificar un Mensaje privado de un Amigo.
-router.put('/amigo/:id/:id/:id', auth, MensajeController.modificarMensajeAmigo);
-// http://localhost:5000/mensajes/amigo/:id/:id
+router.put('/amigo/:id', auth, MensajeController.modificarMensajeAmigo);
+// http://localhost:5000/mensajes/amigo/:id
 
 // Endpoint de eliminar un Mensaje de un Miembro de Comunidad.
-router.delete('/miembro/:id/:id/:id', auth, MensajeController.borrarMensajeMiembro);
-// http://localhost:5000/mensajes/miembro/:id/:id/:id
+router.delete('/miembro/:id', auth, MensajeController.borrarMensajeMiembroId);
+// http://localhost:5000/mensajes/miembro/:id
 
+// Endpoint de eliminar un Mensaje privado de un Amigo.
+router.delete('/amigo/:id', auth, MensajeController.borrarMensajeAmigoId);
+// http://localhost:5000/mensajes/amigo/:id
 
+// Endpoint de eliminar todos los Mensajes.
+router.delete('/', auth, isAdmin, MensajeController.borrarMensajes);
+// http://localhost:5000/mensajes
 
 
 

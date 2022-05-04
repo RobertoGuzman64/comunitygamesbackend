@@ -29,7 +29,7 @@ router.delete('/', auth, isAdmin, ComunidadController.borrarComunidades);
 // http://localhost:5000/comunidades
 
 // Endpoint de eliminar una Comunidad por ID.
-router.delete('/:pk', auth, isAdmin, ComunidadController.borrarComunidadId);
+router.delete('/:id', auth, isAdmin, ComunidadController.borrarComunidadId);
 // http://localhost:5000/comunidades/:id
 
 module.exports = router;
