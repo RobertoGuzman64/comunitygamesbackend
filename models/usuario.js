@@ -14,9 +14,6 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Miembro, {
         foreignKey: 'usuario_id'
       });
-      this.hasMany(models.Amigo, {
-        foreignKey: 'usuario_id'
-      });
     }
   }
   Usuario.init({

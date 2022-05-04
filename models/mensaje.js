@@ -17,15 +17,11 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Miembro,{
         foreignKey: 'miembro_id'
       });
-      this.belongsTo(models.Amigo,{
-        foreignKey: 'amigo_id'
-      });
     }
   }
   Mensaje.init({
     comunidad_id: DataTypes.INTEGER,
     miembro_id: DataTypes.INTEGER,
-    amigo_id: DataTypes.INTEGER,
     mensaje: DataTypes.TEXT,
     fecha: DataTypes.DATE,
     hora: DataTypes.TIME

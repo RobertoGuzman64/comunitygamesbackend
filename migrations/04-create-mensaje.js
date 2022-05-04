@@ -28,16 +28,6 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      amigo_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'Amigos',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
       mensaje: {
         type: Sequelize.TEXT
       },
