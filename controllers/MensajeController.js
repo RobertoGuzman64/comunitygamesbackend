@@ -52,27 +52,6 @@ MensajeController.crearMensajeMiembro = (req, res) => {
     }
 }
 
-// Función de crear un Mensaje privado como Amigo.
-MensajeController.crearMensajeAmigo = (req, res) => {
-    try {
-        let amigo_id = req.body.amigo_id;
-        let mensaje = req.body.mensaje;
-        let fecha = req.body.fecha;
-        let hora = req.body.hora;
-        Mensaje.create({
-            amigo_id: amigo_id,
-            mensaje: mensaje,
-            fecha: fecha,
-            hora: hora
-        })
-            .then(datos => {
-                res.send(datos);
-            });
-    } catch (error) {
-        res.send(error);
-    }
-}
-
 // Función de modificar un Mensaje de un Miembro a una comunidad.
 MensajeController.modificarMensajeMiembro = (req, res) => {
     let id = req.params.id;
@@ -103,33 +82,6 @@ MensajeController.modificarMensajeMiembro = (req, res) => {
     }
 }
 
-// Función de modificar un Mensaje privado de un Amigo.
-MensajeController.modificarMensajeAmigo = (req, res) => {
-    let id = req.params.id;
-    let amigo_id = req.body.amigo_id;
-    let mensaje = req.body.mensaje;
-    let fecha = req.body.fecha;
-    let hora = req.body.hora;
-    try {
-        Mensaje.update({
-            amigo_id: amigo_id,
-            mensaje: mensaje,
-            fecha: fecha,
-            hora: hora
-        }, {
-                where: {
-                    id: id,
-                    amigo_id: amigo_id
-                }
-            })
-            .then(datos => {
-                res.send(datos);
-            });
-    } catch (error) {
-        res.send(error);
-    }
-}
-
 // Función de eliminar un Mensaje de un Miembro a una comunidad.
 MensajeController.borrarMensajeMiembroId = async (req, res) => {
     let id = req.params.id;
@@ -141,31 +93,6 @@ MensajeController.borrarMensajeMiembroId = async (req, res) => {
                 id: id,
                 comunidad_id: comunidad_id,
                 miembro_id: miembro_id
-            },
-        }).then(mensaje => {
-            if (mensaje) {
-                mensaje.destroy({
-                    truncate: false
-                })
-                res.status(200).json({ msg: `El Mensaje con el id ${id} a sido eliminado.` });
-            } else {
-                res.status(404).json({ msg: `El Mensaje con el id ${id} No existe` })
-            }
-        });
-    } catch (error) {
-        res.send(error);
-    }
-}
-
-// Función de eliminar un Mensaje privado de un Amigo.
-MensajeController.borrarMensajeAmigoId = async (req, res) => {
-    let id = req.params.id;
-    let amigo_id = req.body.amigo_id;
-    try {
-        Mensaje.findOne({
-            where: {
-                id: id,
-                amigo_id: comunidad_id,
             },
         }).then(mensaje => {
             if (mensaje) {
