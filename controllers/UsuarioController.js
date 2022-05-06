@@ -118,7 +118,7 @@ UsuarioController.modificarUsuario = async (req, res) => {
 }
 // Función de Modificar la contraseña por ID.
 UsuarioController.modificarClaveUsuario = (req, res) => {
-    let id = req.params.pk;
+    let id = req.params.id;
     let claveAnterior = req.body.claveAnterior;
     let claveNueva = req.body.claveNueva;
     Usuario.findOne({
@@ -168,7 +168,7 @@ UsuarioController.borrarUsuarios = async (req, res) => {
 
 // Función de eliminar un usuario por ID.
 UsuarioController.borrarUsuarioId = async (req, res) => {
-    let id = req.params.pk;
+    let id = req.params.id;
     try {
         Usuario.findOne({
             where: { id: id },

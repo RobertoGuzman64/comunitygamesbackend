@@ -29,7 +29,7 @@ router.delete('/', auth, isAdmin, MiembroController.borrarMiembros);
 // http://localhost:5000/miembros
 
 // Endpoint de eliminar un Miembro por ID.
-router.delete('/:pk', auth, MiembroController.borrarMiembroId);
+router.delete('/:id', auth, MiembroController.borrarMiembroId);
 // http://localhost:5000/miembros/:id
 
 module.exports = router;
