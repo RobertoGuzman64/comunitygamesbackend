@@ -1,8 +1,4 @@
 const { Miembro } = require('../models/index');
-// const { Op } = require("sequelize");
-// const bcrypt = require('bcrypt');
-// const authConfig = require('../config/auth');
-// const jwt = require('jsonwebtoken');
 const MiembroController = {};
 
 // Función de mostrar todos los Miembros.
@@ -129,7 +125,7 @@ MiembroController.borrarMiembros = (req, res) => {
     }
 }
 
-// Función de eliminar una Comunidad por ID.
+// Función de eliminar un Miembro por ID.
 MiembroController.borrarMiembroId = async (req, res) => {
     let id = req.params.id;
     try {

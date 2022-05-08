@@ -14,7 +14,7 @@ router.get('/:id', auth, ComunidadController.verComunidadId);
 
 // Endpoint de buscar Comunidades por genero.
 router.get('/genero/:genero', ComunidadController.verComunidadGenero);
-// http://localhost:5000/comunidades/:genero
+// http://localhost:5000/comunidades/genero/:genero
 
 // Endpoint de crear una Comunidad.
 router.post('/', auth, isAdmin, ComunidadController.crearComunidad);
