@@ -51,7 +51,8 @@ MiembroController.crearMiembro = (req, res) => {
         let fecha = req.body.fecha;
         Miembro.findOne({
             where: {
-                nick: nick,
+                comunidad_id: comunidad_id,
+                usuario_id: usuario_id,
             }
         }).then(miembroRepetido => {
             if (!miembroRepetido) {
@@ -66,7 +67,7 @@ MiembroController.crearMiembro = (req, res) => {
                     res.status(201).json({ msg: `Miembro ${miembro.nick}, creado!` });
                 }).catch(err => res.status(400).json({ msg: `La creación del Miembro falló..`, error: err }));
             } else {
-                res.status(400).json({ msg: `El Miembro con el nick "${miembroRepetido.nick}" ya está creado.` });
+                res.status(400).json({ msg: `El Usuario con la id ${miembroRepetido.usuario_id} ya está unido a esta Comunidad.` });
             }
         });
     } catch (error) {
