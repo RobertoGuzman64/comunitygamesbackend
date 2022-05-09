@@ -25,6 +25,22 @@ MensajeController.verMensajeId = (req, res) => {
     }
 }
 
+// Función de ver todos los Mensajes de una comunidad.
+MensajeController.verMensajesComunidadId = (req, res) => {
+    try {
+        Mensaje.findAll({
+            where: {
+                comunidad_id: req.params.id
+            }
+        }).then(datos => {
+            res.send(datos);
+        }
+        );
+    } catch (error) {
+        res.send(error);
+    }
+}
+
 // Función de crear un Mensaje como Miembro a una comunidad.
 MensajeController.crearMensajeMiembro = (req, res) => {
     try {
