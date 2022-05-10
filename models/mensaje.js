@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
   Mensaje.init({
     comunidad_id: DataTypes.INTEGER,
     miembro_id: DataTypes.INTEGER,
+    nick: DataTypes.STRING,
     mensaje: DataTypes.TEXT,
     fecha: DataTypes.DATE,
     hora: DataTypes.TIME

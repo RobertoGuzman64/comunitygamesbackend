@@ -9,7 +9,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nick: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       nombre: {
         type: Sequelize.STRING

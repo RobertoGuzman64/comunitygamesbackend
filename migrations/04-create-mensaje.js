@@ -28,6 +28,10 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
+      nick: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       mensaje: {
         type: Sequelize.TEXT
       },

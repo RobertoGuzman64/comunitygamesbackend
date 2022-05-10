@@ -46,12 +46,14 @@ MensajeController.crearMensaje = (req, res) => {
     try {
         let comunidad_id = req.body.comunidad_id;
         let miembro_id = req.body.miembro_id;
+        let nick = req.body.nick;
         let mensaje = req.body.mensaje;
         let fecha = req.body.fecha;
         let hora = req.body.hora;
         Mensaje.create({
             comunidad_id: comunidad_id,
             miembro_id: miembro_id,
+            nick: nick,
             mensaje: mensaje,
             fecha: fecha,
             hora: hora
@@ -69,6 +71,7 @@ MensajeController.modificarMensajeId = (req, res) => {
     let id = req.params.id;
     let comunidad_id = req.body.comunidad_id;
     let miembro_id = req.body.miembro_id;
+    let nick = req.body.nick;
     let mensaje = req.body.mensaje;
     let fecha = req.body.fecha;
     let hora = req.body.hora;
@@ -76,6 +79,7 @@ MensajeController.modificarMensajeId = (req, res) => {
         Mensaje.update({
             comunidad_id: comunidad_id,
             miembro_id: miembro_id,
+            nick: nick,
             mensaje: mensaje,
             fecha: fecha,
             hora: hora
