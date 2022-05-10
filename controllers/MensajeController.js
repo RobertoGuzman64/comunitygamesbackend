@@ -42,7 +42,7 @@ MensajeController.verMensajesComunidadId = (req, res) => {
 }
 
 // Función de crear un Mensaje como Miembro a una comunidad.
-MensajeController.crearMensajeMiembro = (req, res) => {
+MensajeController.crearMensaje = (req, res) => {
     try {
         let comunidad_id = req.body.comunidad_id;
         let miembro_id = req.body.miembro_id;
@@ -65,7 +65,7 @@ MensajeController.crearMensajeMiembro = (req, res) => {
 }
 
 // Función de modificar un Mensaje de un Miembro a una comunidad.
-MensajeController.modificarMensajeMiembro = (req, res) => {
+MensajeController.modificarMensajeId = (req, res) => {
     let id = req.params.id;
     let comunidad_id = req.body.comunidad_id;
     let miembro_id = req.body.miembro_id;
@@ -95,7 +95,7 @@ MensajeController.modificarMensajeMiembro = (req, res) => {
 }
 
 // Función de eliminar un Mensaje de un Miembro a una comunidad.
-MensajeController.borrarMensajeMiembroId = async (req, res) => {
+MensajeController.borrarMensajeId = async (req, res) => {
     let id = req.params.id;
     let comunidad_id = req.body.comunidad_id;
     let miembro_id = req.body.miembro_id;
