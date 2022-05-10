@@ -32,9 +32,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      motivo: {
-        type: Sequelize.TEXT
-      },
       avatar: {
         type: Sequelize.STRING
       },

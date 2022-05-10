@@ -46,7 +46,6 @@ MiembroController.crearMiembro = (req, res) => {
         let comunidad_id = req.body.comunidad_id;
         let usuario_id = req.body.usuario_id;
         let nick = req.body.nick;
-        let motivo = req.body.motivo;
         let avatar = req.body.avatar;
         let fecha = req.body.fecha;
         Miembro.findOne({
@@ -60,7 +59,6 @@ MiembroController.crearMiembro = (req, res) => {
                     comunidad_id: comunidad_id,
                     usuario_id: usuario_id,
                     nick: nick,
-                    motivo: motivo,
                     avatar: avatar,
                     fecha: fecha,
                 }).then(miembro => {

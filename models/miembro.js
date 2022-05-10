@@ -27,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
     comunidad_id: DataTypes.INTEGER,
     usuario_id: DataTypes.INTEGER,
     nick: DataTypes.STRING,
-    motivo: DataTypes.TEXT,
     avatar: DataTypes.STRING,
     fecha: DataTypes.DATE
   }, {
