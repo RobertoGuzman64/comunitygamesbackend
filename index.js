@@ -13,7 +13,7 @@ let opcionesCors = {//CONFIGURO OPCIONES DE CORS
 };
 //Middleware
 app.use(express.json()); //PUEDO OBTENER JSON DEL BODY
-app.use(cors(opcionesCors));  //USO CORS PARA QUE PUEDA ACCEDER A LA API DESDE CUALQUIER PAGINA
+app.use(cors(opcionesCors));  //USO CORS
 app.use(router);
 
 // app.listen(PORT, ()=> console.log(`Servidor levantado en el puerto ${PORT}`));
