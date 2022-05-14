@@ -14,14 +14,14 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Comunidad, {
         foreignKey: 'comunidad_id'
       });
-      this.belongsTo(models.Miembro,{
-        foreignKey: 'miembro_id'
+      this.belongsTo(models.Usuario,{
+        foreignKey: 'usuario_id'
       });
     }
   }
   Mensaje.init({
     comunidad_id: DataTypes.INTEGER,
-    miembro_id: DataTypes.INTEGER,
+    usuario_id: DataTypes.INTEGER,
     nick: DataTypes.STRING,
     mensaje: DataTypes.TEXT,
     fecha: DataTypes.DATE,

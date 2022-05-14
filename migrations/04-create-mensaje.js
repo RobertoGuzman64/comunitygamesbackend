@@ -18,11 +18,11 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      miembro_id: {
+      usuario_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Miembros',
+          model: 'Usuarios',
           key: 'id'
         },
         onUpdate: 'CASCADE',
