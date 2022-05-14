@@ -45,14 +45,14 @@ MensajeController.verMensajesComunidadId = (req, res) => {
 MensajeController.crearMensaje = (req, res) => {
     try {
         let comunidad_id = req.body.comunidad_id;
-        let miembro_id = req.body.miembro_id;
+        let usuario_id = req.body.usuario_id;
         let nick = req.body.nick;
         let mensaje = req.body.mensaje;
         let fecha = req.body.fecha;
         let hora = req.body.hora;
         Mensaje.create({
             comunidad_id: comunidad_id,
-            miembro_id: miembro_id,
+            usuario_id: usuario_id,
             nick: nick,
             mensaje: mensaje,
             fecha: fecha,
