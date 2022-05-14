@@ -17,7 +17,7 @@ router.get('/comunidad/:id', auth, MensajeController.verMensajesComunidadId);
 // http://localhost:5000/mensajes/comunidad/id
 
 // Endpoint de crear un Mensaje como Miembro a una Comunidad.
-router.post('/miembro', auth, MensajeController.crearMensaje);
+router.post('/', auth, MensajeController.crearMensaje);
 // http://localhost:5000/mensajes/miembro
 
 // Endpoint de modificar un Mensaje de un Miembro de Comunidad.
