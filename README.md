@@ -1,8 +1,14 @@
-# Proyecto Comunity Games API
+# Comunity Games API
 ***
 ![Foto de la academia de Geekhubs](./img/geekhubs.png)
 ***
-## Proyecto realizado para GeeksHubs Academy como Proyecto Final del curso de Desarrollo de Aplicaciones Web.
+## Repositorio de github en el que se a estado trabajando el proyecto:
+## https://github.com/RobertoGuzman64/comunitygamesbackend.git
+
+## El proyecto se encuentra deployado en heroku y la URL de acceso a los endpoints es:
+## https://comunitygamesbackend.herokuapp.com/
+
+## Proyecto para GeeksHubs Academy como Proyecto Final del curso de Desarrollo de Aplicaciones Web.
 El proyecto consta de 4 tablas: comunidades, miembros, usuarios y mensajes. Los usuarios podrán hacerse miembro de distintas comunidades.podrán enviar mensajes a un chat común de cada comunidad independiente y poder contactar con miembros de su misma comunidad para poder jugar juntos. La relación entre tablas és la siguiente:
 ***
 ![Portfolio Carta](img/esquemaBD.png)
@@ -49,7 +55,7 @@ npx sequelize db:seed:all
 * ENLACE A LA COLECCION DE POSTMAN, CONFIGURADO CON TODOS LOS ENDPOINTS DE LA API
     * (IMPORTANTE) DENTRO DEL ENLACE CLICKEA ARRIBA A LA DERECHA EN RUN IN POSTMAN PARA IMPORTAR LA COLECCIÓN
 
-    [![Probar en Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/19641286/Uyr5oKYK)
+    [![Probar en Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/19641286/UyxjFRcs)
 
 
 ## Tecnologías utilizadas en el proyecto:
