@@ -4,6 +4,9 @@ const auth = require("../middlewares/auth");
 const isAdmin = require("../middlewares/isAdmin");
 const MensajeController = require('../controllers/MensajeController');
 
+// URL de acceso a los endpoints de Heroku.
+// https://comunitygamesbackend.herokuapp.com/
+
 // Endpoint de mostrar todos los Mensajes.
 router.get('/', auth, isAdmin, MensajeController.verMensajes);
 // http://localhost:5000/mensajes

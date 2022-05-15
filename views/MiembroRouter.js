@@ -4,6 +4,9 @@ const auth = require("../middlewares/auth");
 const isAdmin = require("../middlewares/isAdmin");
 const MiembroController = require('../controllers/MiembroController');
 
+// URL de acceso a los endpoints de Heroku.
+// https://comunitygamesbackend.herokuapp.com/
+
 // Endpoint de mostrar todos los Miembros.
 router.get('/', auth, isAdmin, MiembroController.verMiembros);
 // http://localhost:5000/miembros

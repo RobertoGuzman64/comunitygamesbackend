@@ -21,7 +21,7 @@ https://nodejs.org/
 
 * Clonar el proyecto en nuestro equipo con git:
 ```
-$git clone 'url-del-repositorio'
+git clone 'url-del-repositorio'
 ```
 
 * Instalar todas las dependecias con el siguiente comando:
@@ -53,7 +53,7 @@ npx sequelize db:seed:all
 ## ENDPOINTS DE LA API
 
 * ENLACE A LA COLECCION DE POSTMAN, CONFIGURADO CON TODOS LOS ENDPOINTS DE LA API
-    * (IMPORTANTE) DENTRO DEL ENLACE CLICKEA ARRIBA A LA DERECHA EN RUN IN POSTMAN PARA IMPORTAR LA COLECCIÓN
+    * (IMPORTANTE) DENTRO DEL ENLACE CLICKEA ARRIBA A LA DERECHA EN RUN IN POSTMAN PARA IMPORTAR LA COLECCIÓN A TU POSTMAN.
 
     [![Probar en Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/19641286/UyxjFRcs)
 
@@ -69,11 +69,11 @@ npm install express
 npm install nodemon
 ```
 ```
-//AÑADIDO EN PACKAGE.JSON
+// AÑADIDO EN PACKAGE.JSON
 "dev": "nodemon index.js"
 ```
 ```
-//EJECUTAMOS EN TERMINAL
+// EJECUTAMOS EN TERMINAL
 npm run dev
 ```
 * **morgan**: Instalamos morgan en nuestro proyecto, para poder mostrar mensajes por terminal al realizar peticiones al servidor.
@@ -110,16 +110,16 @@ Usamos el modelo vista-controlador para estructurar el proyecto. **Creamos un CR
 * **index.js**: Este es el archivo principal. En este archivo se llama al archivo de las rutas, en donde se gestiona la ruta inicial (/) y se arranca el servidor.
 
 * **config**
-    * **config.json**: En este archivo se gestiona la configuración para conectar con la base de datos. Se crea de manera automática con **sequelize**.
     * **auth.js**: En este archivo se gestiona la clave con la que se cifra el password a encriptar, la duración del token y la cantidad de veces que se encripta el password.
+    * **config.json**: En este archivo se gestiona la configuración para conectar con la base de datos. Se crea de manera automática con **sequelize**.
 
 * **middlewares**
     * **auth.js**: En este archivo se gestiona la existencia y uso de los token para acceder a las zonas restringidas de la API. De aquí se obtiene el rol del usuario.
-
+    * **isAdmin.js**: En este archivo se gestiona la existencia y uso de los token para acceder a las zonas restringidas de la API. De aquí se obtiene el rol del Administrador de la aplicación.
 
 * **db.js**: En este archivo se gestiona el acceso a la base de datos.
 
-* **router.js**: En este archivo se gestiona las diferentes vistas que puede tener la aplicación. Se creará una ruta por cada tabla de la base de datos a la que queramos acceder (películas, usuarios y pedidos).
+* **router.js**: En este archivo se gestiona las diferentes vistas que puede tener la aplicación. Se creará una ruta por cada tabla de la base de datos a la que queramos acceder (comunidades, miembros, usuarios y mensajes).
 
 * **views**
     * **ComunidadRouter.js**: En este archivo gestionamos la ruta /comunidades y los endpoints que apuntan a dicha ruta.

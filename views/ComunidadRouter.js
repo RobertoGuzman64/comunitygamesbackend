@@ -4,6 +4,9 @@ const auth = require("../middlewares/auth");
 const isAdmin = require("../middlewares/isAdmin");
 const ComunidadController = require('../controllers/ComunidadController');
 
+// URL de acceso a los endpoints de Heroku.
+// https://comunitygamesbackend.herokuapp.com/
+
 // Endpoint de mostrar todas las Comunidades.
 router.get('/', ComunidadController.verComunidades);
 // http://localhost:5000/comunidades
