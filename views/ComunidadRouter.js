@@ -21,7 +21,7 @@ router.post('/', auth, isAdmin, ComunidadController.crearComunidad);
 // http://localhost:5000/comunidades
 
 // Endpoint de Modificar la Comunidad por ID.
-router.put('/:id', auth, isAdmin, ComunidadController.modificarComunidad);
+router.put('/:id', auth, isAdmin, ComunidadController.modificarComunidadId);
 // http://localhost:5000/comunidades/:id
 
 // Endpoint de eliminar todas las Comunidades.

@@ -103,7 +103,7 @@ UsuarioController.login = (req, res) => {
 };
 
 // Función de Modificar el perfil por ID.
-UsuarioController.modificarUsuario = async (req, res) => {
+UsuarioController.modificarUsuarioId = async (req, res) => {
     let datos = req.body;
     let id = req.params.id;
     try {
@@ -117,7 +117,7 @@ UsuarioController.modificarUsuario = async (req, res) => {
     }
 }
 // Función de Modificar la contraseña por ID.
-UsuarioController.modificarClaveUsuario = (req, res) => {
+UsuarioController.modificarClaveUsuarioId = (req, res) => {
     let id = req.params.id;
     let claveAnterior = req.body.claveAnterior;
     let claveNueva = req.body.claveNueva;

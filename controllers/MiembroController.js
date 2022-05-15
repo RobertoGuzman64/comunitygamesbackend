@@ -74,7 +74,7 @@ MiembroController.crearMiembro = (req, res) => {
 }
 
 // Función de modificar los datos de un Miembro de la Comunidad.
-MiembroController.modificarMiembro = (req, res) => {
+MiembroController.modificarMiembroId = (req, res) => {
     let datos = req.body;
     let id = req.params.id;
     try {

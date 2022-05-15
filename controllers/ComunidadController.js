@@ -76,7 +76,7 @@ ComunidadController.crearComunidad = (req, res) => {
 }
 
 // Función de modificar la Comunidad por ID.
-ComunidadController.modificarComunidad = (req, res) => {
+ComunidadController.modificarComunidadId = (req, res) => {
     let datos = req.body;
     let id = req.params.id;
     try {

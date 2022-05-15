@@ -5,11 +5,11 @@ const isAdmin = require("../middlewares/isAdmin");
 const UsuarioController = require('../controllers/UsuarioController');
 
 // Endpoint de mostrar todos los Usuarios.
-router.get('/', auth, UsuarioController.verUsuarios);
+router.get('/', auth, isAdmin, UsuarioController.verUsuarios);
 // http://localhost:5000/usuarios
 
 // Endpoint de ver un Usuario por ID.
-router.get('/:id', auth, UsuarioController.verUsuarioId);
+router.get('/:id', auth, isAdmin, UsuarioController.verUsuarioId);
 // http://localhost:5000/usuarios/id
 
 // Endpoint de registrar Usuario.
@@ -21,11 +21,11 @@ router.post('/login', UsuarioController.login);
 // http://localhost:5000/usuarios/login
 
 // Endpoint de Modificar el perfil por ID.
-router.put('/:id', auth, UsuarioController.modificarUsuario);
+router.put('/:id', auth, UsuarioController.modificarUsuarioId);
 // http://localhost:5000/usuarios/:id
 
 // Endpoint de Modificar la contraseña ID.
-router.put('/:id/clave', auth, UsuarioController.modificarClaveUsuario);
+router.put('/:id/clave', auth, UsuarioController.modificarClaveUsuarioId);
 // http://localhost:5000/usuarios/:id/clave
 
 // Endpoint de eliminar todos los Usuarios.
