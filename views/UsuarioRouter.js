@@ -5,7 +5,7 @@ const isAdmin = require("../middlewares/isAdmin");
 const UsuarioController = require('../controllers/UsuarioController');
 
 // URL de acceso a los endpoints de Heroku.
-// https://comunitygamesbackend.herokuapp.com/
+// https://comunitygamesbackend.herokuapp.com/ 
 
 // Endpoint de mostrar todos los Usuarios.
 router.get('/', auth, isAdmin, UsuarioController.verUsuarios);
