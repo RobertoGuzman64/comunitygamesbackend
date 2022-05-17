@@ -5,101 +5,108 @@ const authConfig = require('../config/auth');
 const jwt = require('jsonwebtoken');
 const UsuarioController = {};
 
-
 // Función de mostrar todos los Usuarios.
-UsuarioController.verUsuarios = (req, res) => {
-    Usuario.findAll()
-        .then(data => {
-            res.send(data)
+UsuarioController.verUsuarios = async (req, res) => {
+    try {
+        const usuarios = await Usuario.findAll();
+        res.json(usuarios);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al mostrar los usuarios',
+            error
         });
+    }
 };
 
 // Función de ver un Usuario por ID.
-UsuarioController.verUsuarioId = (req, res) => {
-    let id = req.params.id;
-    Usuario.findOne({
-        where: { id: id }
-    }).then(data => {
-        res.send(data)
-    });
+UsuarioController.verUsuarioId = async (req, res) => {
+    try {
+        const datos = await Usuario.findByPk(req.params.id);
+        res.send(datos);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al obtener el usuario'
+        });
+    }
 };
 
-// Función de registrar Usuario.
+// Función de crear un Usuario.
 UsuarioController.crearUsuario = async (req, res) => {
-    let nick = req.body.nick;
-    let nombre = req.body.nombre;
-    let apellidos = req.body.apellidos;
-    let edad = req.body.edad;
-    let email = req.body.email;
-    let clave = bcrypt.hashSync(req.body.clave, Number.parseInt(authConfig.rondas));
-    let discord = req.body.discord;
-    let juego = req.body.juego;
-    Usuario.findAll({
-        where: {
-            [Op.or]: [
-                {
-                    email: {
-                        [Op.like]: email
-                    }
-                },
-                {
-                    nick: {
-                        [Op.like]: nick
-                    }
-                }
-            ]
+    try {
+        const { nick, nombre, apellidos, edad, email, clave, discord, juego } = req.body;
+        const usuario = await Usuario.findOne({
+            where: {
+                [Op.or]: [{ email: email }, { nick: nick }, { discord: discord }]
+            }
+        });
+        if (usuario) {
+            return res.status(400).send({
+                message: 'El usuario ya existe'
+            });
         }
-    }).then(datosRepetidos => {
-        if (datosRepetidos == 0) {
-            Usuario.create({
-                nick: nick,
-                nombre: nombre,
-                apellidos: apellidos,
-                edad: edad,
-                email: email,
-                clave: clave,
-                discord: discord,
-                juego: juego,
-            }).then(usuario => {
-                res.send(`${usuario.nombre}, bienvenid@ a nuestra app de Comunidades de Juegos`);
-            })
-                .catch((error) => {
-                    res.send(error);
-                });
-        } else {
-            res.send("El usuario con ese e-mail ya existe en nuestra base de datos");
-        }
-    }).catch(error => {
-        res.send(error)
-    });
+        const claveEncriptada = bcrypt.hashSync(clave, Number.parseInt(authConfig.rondas));
+        const usuarioNuevo = await Usuario.create({
+            nick,
+            nombre,
+            apellidos,
+            edad,
+            email,
+            clave : claveEncriptada,
+            discord,
+            juego
+        });
+        res.send(usuarioNuevo);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al crear el usuario'
+        });
+    }
 };
 
 // Función de Login de Usuario.
-UsuarioController.login = (req, res) => {
-    let email = req.body.email;
-    let clave = req.body.clave;
-    Usuario.findOne({
-        where: { email: email }
-    }).then(element => {
-        if (!element) {
-            res.send("Usuario o contraseña inválido");
-        } else {
-            if (bcrypt.compareSync(clave, element.clave)) {
-                console.log(element.clave);
-                let token = jwt.sign({ usuario: element }, authConfig.complemento, {
-                    expiresIn: authConfig.expiracion
-                });
-                res.json({
-                    usuario: element,
-                    token: token
-                })
-            } else {
-                res.status(401).json({ msg: "Usuario o contraseña inválido" });
+UsuarioController.login = async (req, res) => {
+    try {
+        const { email, clave } = req.body;
+        const usuario = await Usuario.findOne({
+            where: {
+                email: email
             }
-        };
-    }).catch(error => {
-        res.send(error);
-    })
+        });
+        if (!usuario) {
+            return res.status(400).send({
+                message: 'El usuario no existe'
+            });
+        }
+        if (!bcrypt.compareSync(clave, usuario.clave)) {
+            return res.status(400).send({
+                message: 'La contraseña no es correcta'
+            });
+        }
+        const token = jwt.sign({ id: usuario.id }, authConfig.complemento, {
+            expiresIn: authConfig.expiracion
+        });
+        res.send({
+            message: 'Login correcto',
+            token: token,
+            usuario: {
+                id: usuario.id,
+                nick: usuario.nick,
+                nombre: usuario.nombre,
+                apellidos: usuario.apellidos,
+                edad: usuario.edad,
+                email: usuario.email,
+                discord: usuario.discord,
+                juego: usuario.juego
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al hacer login'
+        });
+    }
 };
 
 // Función de Modificar el perfil por ID.
