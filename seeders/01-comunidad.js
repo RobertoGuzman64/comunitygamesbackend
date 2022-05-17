@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('comunidads', [
+    await queryInterface.bulkInsert('Comunidads', [
       {"titulo":"Clash Royale","imagen":"https://i.blogs.es/8935db/lroyale/1366_2000.jpg","genero": "Estrategia", "fecha": "2022-03-04","popularidad":"08","descripcion":"Juego de estrategia y Construcción","createdAt":"2021-10-27","updatedAt":"2021-10-27"},
       {"titulo":"Call of Duty","imagen":"https://i.blogs.es/b2ec36/warzone/840_560.jpeg","genero": "Guerra", "fecha": "2022-03-04","popularidad":"09","descripcion":"Juego de soldados etc....","createdAt":"2021-10-27","updatedAt":"2021-10-27"},
       {"titulo":"MineCraft","imagen":"https://www.minecraft.net/content/dam/games/minecraft/key-art/CC-Update-Part-II_600x360.jpg","genero": "Construcción", "fecha": "2015-05-07","popularidad":"05","descripcion":"Juego Construcción en tiempo real","createdAt":"2021-10-27","updatedAt":"2021-10-27"},
@@ -21,6 +21,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete('comunidads', null, {});
+    await queryInterface.bulkDelete('Comunidads', null, {});
   }
 };
