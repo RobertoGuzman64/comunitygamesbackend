@@ -2,128 +2,123 @@ const { Comunidad } = require('../models/index');
 const ComunidadController = {};
 
 // Función de mostrar todas las Comunidades.
-ComunidadController.verComunidades = (req, res) => {
+ComunidadController.verComunidades = async (req, res) => {
     try {
-        Comunidad.findAll()
-            .then(datos => {
-                res.send(datos);
-            });
-    } catch (err) {
-        res.send(err);
+        const comunidades = await Comunidad.findAll();
+        res.json(comunidades);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al mostrar las Comunidades',
+            error
+        });
     }
-}
+};
 
 // Función de ver una Comunidad por ID.
-ComunidadController.verComunidadId = (req, res) => {
+ComunidadController.verComunidadId = async (req, res) => {
     try {
-        Comunidad.findByPk(req.params.id)
-            .then(datos => {
-                res.send(datos)
-            });
+        const comunidades = await Comunidad.findByPk(req.params.id);
+        res.send(comunidades);
     } catch (error) {
-        res.send(error);
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al mostrar la Comunidad',
+        });
     }
-}
+};
 
 // Función de buscar Comunidades por género.
-ComunidadController.verComunidadGenero = (req, res) => {
+ComunidadController.verComunidadGenero = async (req, res) => {
     try {
-        Comunidad.findAll({
+        const comunidades = await Comunidad.findAll({
             where: {
                 genero: req.params.genero
             }
-        })
-            .then(datos => {
-                res.send(datos);
-            });
+        });
+        res.send(comunidades);
     } catch (error) {
-        res.send(error);
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al mostrar las Comunidades',
+        });
     }
-}
+};
 
-// Función de crear una Comunidad.
-ComunidadController.crearComunidad = (req, res) => {
+// Función de crear una Comunidad con try catch y mensajes de error.
+ComunidadController.crearComunidad = async (req, res) => {
     try {
-        let titulo = req.body.titulo;
-        let imagen = req.body.imagen;
-        let genero = req.body.genero;
-        let fecha = req.body.fecha;
-        let popularidad = req.body.popularidad;
-        let descripcion = req.body.descripcion;
-        Comunidad.findOne({
+        const { titulo, imagen, genero, fecha, popularidad, descripcion } = req.body;
+        const comunidad = await Comunidad.findOne({
             where: {
-                titulo: titulo,
-            }
-        }).then(comunidadRepetida => {
-            if (!comunidadRepetida) {
-                Comunidad.create({
-                    titulo: titulo,
-                    imagen: imagen,
-                    genero: genero,
-                    fecha: fecha,
-                    popularidad: popularidad,
-                    descripcion: descripcion
-                }).then(comunidad => {
-                    res.status(201).json({ msg: `Comunidad ${comunidad.titulo}, creada!` });
-                }).catch(err => res.status(400).json({ msg: `La creación de la Comunidad falló..`, error: err }));
-            } else {
-                res.status(400).json({ msg: `La Comunidad con el titulo "${comunidadIgual.titulo}" ya está creada.` });
+                titulo: titulo
             }
         });
-    } catch (error) {
-        res.status(500).json({ msg: `Sucedió algo inesperado mientras creaba la Comunidad.`, error: { name: error.name, message: error.message } });
-    }
-}
-
-// Función de modificar la Comunidad por ID.
-ComunidadController.modificarComunidadId = (req, res) => {
-    let datos = req.body;
-    let id = req.params.id;
-    try {
-        if (datos.titulo) {
-            Comunidad.findOne({
-                where: {
-                    titulo: datos.titulo
-                }
-            }).then(comunidad => {
-                if (comunidad) {
-                    res.status(409).json({ msg: "La Comunidad con este título ya existe." })
-                } else {
-                    Comunidad.update(datos, {
-                        where: { id: id }
-                    }).then(() => {
-                        res.status(200).json({
-                            msg: `La Comunidad con el id ${id} a sido Actualizada.`,
-                        });
-                    });
-                }
-            })
-        } else {
-            Comunidad.update(datos, {
-                where: { id: id }
-            }).then(() => {
-                res.status(200).json({
-                    msg: `La Comunidad con el id ${id} a sido Actualizada.`,
-                });
+        if (comunidad) {
+            return res.status(400).send({
+                message: 'La comunidad ya existe'
             });
         }
+        const comunidadNueva = await Comunidad.create({
+            titulo,
+            imagen,
+            genero,
+            fecha,
+            popularidad,
+            descripcion
+        });
+        res.send(comunidadNueva);
     } catch (error) {
-        res.send(error);
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al crear la Comunidad',
+        });
     }
-}
+};
+
+// Función de modificar la Comunidad por ID.
+ComunidadController.modificarComunidadId = async (req, res) => {
+    try {
+        const { titulo, imagen, genero, fecha, popularidad, descripcion } = req.body;
+        const comunidad = await Comunidad.findByPk(req.params.id);
+        if (!comunidad) {
+            return res.status(400).send({
+                message: 'La comunidad no existe'
+            });
+        }
+        const comunidadModificada = await comunidad.update({
+            titulo,
+            imagen,
+            genero,
+            fecha,
+            popularidad,
+            descripcion
+        });
+        res.send({
+            message: `La Comunidad con el id ${comunidad.id} a sido Modificada.`,
+            comunidadModificada
+        });
+    } catch (error) {
+        console.log(error); 
+        res.status(500).send({
+            message: 'Error al modificar la Comunidad',
+        });
+    }
+};
 
 // Función de eliminar todas las Comunidades.
-ComunidadController.borrarComunidades = (req, res) => {
+ComunidadController.borrarComunidades = async (req, res) => {
     try {
-        Comunidad.destroy({
-            where: {},
-            truncate: false
-        })
-            .then(comunidadesEliminadas => {
-                res.send(`Se han eliminado ${comunidadesEliminadas} Comunidades.`);
-            })
+        const comunidades = await Comunidad.destroy({
+            where: {}
+        });
+        res.send({
+            message: `Se eliminaron ${comunidades} Comunidades`
+        });
     } catch (error) {
-        res.send(error);
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al eliminar las Comunidades',
+        });
     }
 };
 
@@ -131,21 +126,25 @@ ComunidadController.borrarComunidades = (req, res) => {
 ComunidadController.borrarComunidadId = async (req, res) => {
     let id = req.params.id;
     try {
-        Comunidad.findOne({
-            where: { id: id },
-        }).then(comunidad => {
-            if (comunidad) {
-                comunidad.destroy({
-                    truncate: false
-                })
-                res.status(200).json({ msg: `La Comunidad con el id ${id} a sido eliminada.` });
-            } else {
-                res.status(404).json({ msg: `La Comunidad con el id ${id} No existe` })
-            }
+        const comunidad = await Comunidad.findByPk(id);
+        if (!comunidad) {
+            return res.status(400).send({
+                message: 'La comunidad no existe'
+            });
+        }
+        const comunidadBorrada = await Comunidad.destroy({
+            where: { id: id }
+        });
+        res.send({
+            message: `La Comunidad con el id ${comunidad.id} a sido Eliminada.`,
+            comunidadBorrada
         });
     } catch (error) {
-        res.send(error);
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al eliminar la Comunidad'
+        });
     }
-}
+};
 
 module.exports = ComunidadController;

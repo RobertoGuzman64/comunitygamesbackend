@@ -12,7 +12,7 @@ UsuarioController.verUsuarios = async (req, res) => {
         res.json(usuarios);
     } catch (error) {
         res.status(500).json({
-            message: 'Error al mostrar los usuarios',
+            message: 'Error al mostrar los Usuarios',
             error
         });
     }
@@ -21,12 +21,12 @@ UsuarioController.verUsuarios = async (req, res) => {
 // Función de ver un Usuario por ID.
 UsuarioController.verUsuarioId = async (req, res) => {
     try {
-        const datos = await Usuario.findByPk(req.params.id);
-        res.send(datos);
+        const usuarios = await Usuario.findByPk(req.params.id);
+        res.send(usuarios);
     } catch (error) {
         console.log(error);
         res.status(500).send({
-            message: 'Error al obtener el usuario'
+            message: 'Error al mostrar el Usuario'
         });
     }
 };
@@ -42,7 +42,7 @@ UsuarioController.crearUsuario = async (req, res) => {
         });
         if (usuario) {
             return res.status(400).send({
-                message: 'El usuario ya existe'
+                message: 'El Usuario ya existe'
             });
         }
         const claveEncriptada = bcrypt.hashSync(clave, Number.parseInt(authConfig.rondas));
@@ -76,7 +76,7 @@ UsuarioController.login = async (req, res) => {
         });
         if (!usuario) {
             return res.status(400).send({
-                message: 'El usuario no existe'
+                message: 'El Usuario no existe'
             });
         }
         if (!bcrypt.compareSync(clave, usuario.clave)) {
@@ -116,7 +116,7 @@ UsuarioController.modificarUsuarioId = async (req, res) => {
         const usuario = await Usuario.findByPk(req.params.id);
         if (!usuario) {
             return res.status(400).send({
-                message: 'El usuario no existe'
+                message: 'El Usuario no existe'
             });
         }
         const usuarioModificado = await usuario.update({
@@ -134,7 +134,7 @@ UsuarioController.modificarUsuarioId = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).send({
-            message: 'Error al modificar el usuario'
+            message: 'Error al modificar el Usuario'
         });
     }
 };
@@ -156,9 +156,9 @@ UsuarioController.modificarClaveUsuarioId = async (req, res) => {
             where: { id: id }
         }).then(modificarUsuario => {
             res.status(200).json({ msg: `Usuario con el id ${id} a sido Actualizado.`, usuario: modificarUsuario });
-        }).catch(error => res.status(422).json({ msg: `Ocurrió algo inesperado al obtener los datos del usuario.`, error: { name: error.name, message: error.message, detail: error } }));
+        }).catch(error => res.status(422).json({ msg: `Ocurrió algo inesperado al obtener los datos del Usuario.`, error: { name: error.name, message: error.message, detail: error } }));
     } catch (error) {
-        res.status(422).json({ msg: `Ocurrió algo inesperado al obtener los datos del usuario.`, error: { name: error.name, message: error.message, detail: error } });
+        res.status(422).json({ msg: `Ocurrió algo inesperado al obtener los datos del Usuario.`, error: { name: error.name, message: error.message, detail: error } });
     }
 }
 
@@ -169,12 +169,12 @@ UsuarioController.borrarUsuarios = async (req, res) => {
             where: {}
         });
         res.send({
-            message: `Se eliminaron ${usuarios} usuarios`
+            message: `Se eliminaron ${usuarios} Usuarios`
         });
     } catch (error) {
         console.log(error);
         res.status(500).send({
-            message: 'Error al eliminar los usuarios'
+            message: 'Error al eliminar los Usuarios'
         });
     }
 };
@@ -186,20 +186,20 @@ UsuarioController.borrarUsuarioId = async (req, res) => {
         const usuario = await Usuario.findByPk(id);
         if (!usuario) {
             return res.status(400).send({
-                message: 'El usuario no existe'
+                message: 'El Usuario no existe'
             });
         }
         const usuarioBorrado = await Usuario.destroy({
             where: { id: id }
         });
         res.send({
-            message: `El Usuario con la id ${usuario.id} a sido eliminado.`,
+            message: `El Usuario con el id ${usuario.id} a sido eliminado.`,
             usuario: usuarioBorrado
         });
     } catch (error) {
         console.log(error);
         res.status(500).send({
-            message: 'Error al eliminar el usuario'
+            message: 'Error al eliminar el Usuario'
         });
     }
 };
