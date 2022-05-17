@@ -98,7 +98,8 @@ UsuarioController.login = async (req, res) => {
                 edad: usuario.edad,
                 email: usuario.email,
                 discord: usuario.discord,
-                juego: usuario.juego
+                juego: usuario.juego,
+                administrador: usuario.administrador
             }
         });
     } catch (error) {
