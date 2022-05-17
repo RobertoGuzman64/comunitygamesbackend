@@ -84,7 +84,7 @@ UsuarioController.login = async (req, res) => {
                 message: 'La contraseña no es correcta'
             });
         }
-        const token = jwt.sign({ id: usuario.id }, authConfig.complemento, {
+        const token = jwt.sign({ usuario: usuario }, authConfig.complemento, {
             expiresIn: authConfig.expiracion
         });
         res.send({
@@ -109,12 +109,50 @@ UsuarioController.login = async (req, res) => {
     }
 };
 
-// Función de Modificar el perfil por ID.
+// Función de modificar el perfil por id con try catch y mensajes de error en caso de error.
 UsuarioController.modificarUsuarioId = async (req, res) => {
-    let datos = req.body;
-    let id = req.params.id;
     try {
-        Usuario.update(datos, {
+        const { nick, nombre, apellidos, edad, discord, juego } = req.body;
+        const usuario = await Usuario.findByPk(req.params.id);
+        if (!usuario) {
+            return res.status(400).send({
+                message: 'El usuario no existe'
+            });
+        }
+        const usuarioModificado = await usuario.update({
+            nick,
+            nombre,
+            apellidos,
+            edad,
+            discord,
+            juego
+        });
+        res.send({
+            message: `El Usuario con la id ${usuario.id} a sido Modificado.`,
+            usuario: usuarioModificado
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al modificar el usuario'
+        });
+    }
+};
+
+// Función de Modificar la contraseña por ID.
+UsuarioController.modificarClaveUsuarioId = async (req, res) => {
+    let id = req.params.id;
+    let claveAnterior = req.body.claveAnterior;
+    let claveNueva = req.body.claveNueva;
+    try {
+        const usuario = await Usuario.findByPk(id);
+        if (!bcrypt.compareSync(claveAnterior, usuario.clave)) {
+            return res.status(400).send({
+                message: 'La contraseña anterior no es correcta'
+            });
+        }
+        const claveEncriptada = bcrypt.hashSync(claveNueva, Number.parseInt(authConfig.rondas));
+        Usuario.update({ clave: claveEncriptada }, {
             where: { id: id }
         }).then(modificarUsuario => {
             res.status(200).json({ msg: `Usuario con el id ${id} a sido Actualizado.`, usuario: modificarUsuario });
@@ -123,53 +161,21 @@ UsuarioController.modificarUsuarioId = async (req, res) => {
         res.status(422).json({ msg: `Ocurrió algo inesperado al obtener los datos del usuario.`, error: { name: error.name, message: error.message, detail: error } });
     }
 }
-// Función de Modificar la contraseña por ID.
-UsuarioController.modificarClaveUsuarioId = (req, res) => {
-    let id = req.params.id;
-    let claveAnterior = req.body.claveAnterior;
-    let claveNueva = req.body.claveNueva;
-    Usuario.findOne({
-        where: { id: id }
-    }).then(usuarioEncontrado => {
-        if (usuarioEncontrado) {
-            if (bcrypt.compareSync(claveAnterior, usuarioEncontrado.clave)) {
-                claveNueva = bcrypt.hashSync(claveNueva, Number.parseInt(authConfig.rondas));
-                let data = {
-                    clave: claveNueva
-                }
-                usuarioEncontrado.update(data, {})
-                    .then(actualiza => {
-                        res.send(actualiza);
-                    })
-                    .catch((error) => {
-                        res.status(400).json({
-                            msg: `Ocurrió algún error al actualizar la contraseña.`,
-                            error: error
-                        });
-                    });
-            } else {
-                res.status(401).json({ msg: "Usuario o contraseña inválidos." });
-            }
-        } else {
-            res.status(404).send(`Usuario no encontrado.`);
-        }
-    }).catch((error => {
-        res.status(400).json({ msg: `sucedió algo inesperado.`, error: { name: error.name, message: error.message } });
-    }));
-};
 
-// Función de eliminar todos los Usuarios.
+// Función de eliminar todos los Usuarios con try catch y mensaje de error en caso de error.y también mostrar el número de Usuarios eliminados.
 UsuarioController.borrarUsuarios = async (req, res) => {
     try {
-        Usuario.destroy({
-            where: {},
-            truncate: false
-        })
-            .then(usuariosEliminados => {
-                res.send(`Se han eliminado ${usuariosEliminados} usuarios`);
-            })
+        const usuarios = await Usuario.destroy({
+            where: {}
+        });
+        res.send({
+            message: `Se eliminaron ${usuarios} usuarios`
+        });
     } catch (error) {
-        res.send(error);
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al eliminar los usuarios'
+        });
     }
 };
 
@@ -177,21 +183,25 @@ UsuarioController.borrarUsuarios = async (req, res) => {
 UsuarioController.borrarUsuarioId = async (req, res) => {
     let id = req.params.id;
     try {
-        Usuario.findOne({
-            where: { id: id },
-        }).then(usuario => {
-            if (usuario) {
-                usuario.destroy({
-                    truncate: false
-                })
-                res.status(200).json({ msg: `El Usuario con la id ${id} a sido eliminado.` });
-            } else {
-                res.status(404).json({ msg: `El Usuario con la id ${id} No existe` })
-            }
+        const usuario = await Usuario.findByPk(id);
+        if (!usuario) {
+            return res.status(400).send({
+                message: 'El usuario no existe'
+            });
+        }
+        const usuarioBorrado = await Usuario.destroy({
+            where: { id: id }
+        });
+        res.send({
+            message: `El Usuario con la id ${usuario.id} a sido eliminado.`,
+            usuario: usuarioBorrado
         });
     } catch (error) {
-        res.send(error);
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al eliminar el usuario'
+        });
     }
-}
+};
 
 module.exports = UsuarioController;
