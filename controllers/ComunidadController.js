@@ -17,8 +17,8 @@ ComunidadController.verComunidades = async (req, res) => {
 // Función de ver una Comunidad por ID.
 ComunidadController.verComunidadId = async (req, res) => {
     try {
-        const comunidades = await Comunidad.findByPk(req.params.id);
-        res.send(comunidades);
+        const comunidad = await Comunidad.findByPk(req.params.id);
+        res.send(comunidad);
     } catch (error) {
         console.log(error);
         res.status(500).send({

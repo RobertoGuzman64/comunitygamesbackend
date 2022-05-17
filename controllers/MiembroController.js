@@ -2,147 +2,146 @@ const { Miembro } = require('../models/index');
 const MiembroController = {};
 
 // Función de mostrar todos los Miembros.
-MiembroController.verMiembros = (req, res) => {
+MiembroController.verMiembros = async (req, res) => {
     try {
-        Miembro.findAll()
-            .then(datos => {
-                res.send(datos);
-            });
-    } catch (err) {
-        res.send(err);
+        const miembros = await Miembro.findAll();
+        res.json(miembros);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al mostrar los Miembros',
+            error
+        });
     }
-}
+};
 
 // Función de ver un Miembro por ID.
-MiembroController.verMiembroId = (req, res) => {
+MiembroController.verMiembroId = async (req, res) => {
     try {
-        Miembro.findByPk(req.params.id)
-            .then(datos => {
-                res.send(datos)
-            });
+        const miembro = await Miembro.findByPk(req.params.id);
+        res.send(miembro);
     } catch (error) {
-        res.send(error);
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al mostrar el Miembro',
+        });
     }
-}
+};
 
 // Función de ver todos los Miembros de una Comunidad.
-MiembroController.verMiembrosComunidadId = (req, res) => {
+MiembroController.verMiembrosComunidadId = async (req, res) => {
     try {
-        Miembro.findAll({
+        const miembros = await Miembro.findAll({
             where: {
                 comunidad_id: req.params.id
             }
-        }).then(datos => {
-            res.send(datos);
         });
+        res.send(miembros);
     } catch (error) {
-        res.send(error);
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al mostrar los Miembros',
+        });
     }
-}
+};
 
 // Función de crear un Miembro de la Comunidad.
-MiembroController.crearMiembro = (req, res) => {
+MiembroController.crearMiembro = async (req, res) => {
     try {
-        let comunidad_id = req.body.comunidad_id;
-        let usuario_id = req.body.usuario_id;
-        let nick = req.body.nick;
-        let avatar = req.body.avatar;
-        let fecha = req.body.fecha;
-        Miembro.findOne({
+        const { comunidad_id, usuario_id, nick, avatar, fecha } = req.body;
+        const miembro = await Miembro.findOne({
             where: {
                 comunidad_id: comunidad_id,
-                usuario_id: usuario_id,
-            }
-        }).then(miembroRepetido => {
-            if (!miembroRepetido) {
-                Miembro.create({
-                    comunidad_id: comunidad_id,
-                    usuario_id: usuario_id,
-                    nick: nick,
-                    avatar: avatar,
-                    fecha: fecha,
-                }).then(miembro => {
-                    res.status(201).json({ msg: `Miembro ${miembro.nick}, creado!` });
-                }).catch(err => res.status(400).json({ msg: `La creación del Miembro falló..`, error: err }));
-            } else {
-                res.status(400).json({ msg: `El Usuario con la id ${miembroRepetido.usuario_id} ya está unido a esta Comunidad.` });
+                usuario_id: usuario_id
             }
         });
-    } catch (error) {
-        res.status(500).json({ msg: `Sucedió algo inesperado mientras creaba el Miembro.`, error: { name: error.name, message: error.message } });
-    }
-}
-
-// Función de modificar los datos de un Miembro de la Comunidad.
-MiembroController.modificarMiembroId = (req, res) => {
-    let datos = req.body;
-    let id = req.params.id;
-    try {
-        if (datos.id) {
-            Miembro.findOne({
-                where: {
-                    id: datos.id
-                }
-            }).then(miembro => {
-                if (miembro) {
-                    res.status(409).json({ msg: "El Miembro con esta id ya existe." })
-                } else {
-                    Miembro.update(datos, {
-                        where: { id: id }
-                    }).then(() => {
-                        res.status(200).json({
-                            msg: `El Miembro id ${id} a sido Actualizado.`,
-                        });
-                    });
-                }
-            })
-        } else {
-            Miembro.update(datos, {
-                where: { id: id }
-            }).then(() => {
-                res.status(200).json({
-                    msg: `El Miembro con el id ${id} a sido Actualizado.`,
-                });
+        if (miembro) {
+            return res.status(400).send({
+                message: 'El Miembro ya existe'
             });
         }
+        const miembroNuevo = await Miembro.create({
+            comunidad_id,
+            usuario_id,
+            nick,
+            avatar,
+            fecha
+        });
+        res.send({
+            message: `El Miembro con el nick ${miembroNuevo.nick} a sido Creado.`,
+            miembroNuevo
+        });
     } catch (error) {
-        res.send(error);
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al crear el Miembro',
+        });
     }
-}
+};
+
+// Función de modificar los datos de un Miembro de la Comunidad.
+MiembroController.modificarMiembroId = async (req, res) => {
+    try {
+        const { comunidad_id, usuario_id, avatar, } = req.body;
+        const miembro = await Miembro.findByPk(req.params.id);
+        if (!miembro) {
+            return res.status(400).send({
+                message: 'El Miembro no existe'
+            });
+        }
+        const miembroModificado = await miembro.update({
+            comunidad_id,
+            usuario_id,
+            avatar,
+        });
+        res.send({
+            message: `El Miembro con el nick ${miembro.nick} a sido Modificado.`,
+            miembroModificado
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al modificar el Miembro',
+        });
+    }
+};
 
 // Función de eliminar todos los Miembros de todas las Comunidades.
-MiembroController.borrarMiembros = (req, res) => {
+MiembroController.borrarMiembros = async (req, res) => {
     try {
-        Miembro.destroy({
-            where: {},
-            truncate: true
-        }).then(() => {
-            res.status(200).json({ msg: "Todos los Miembros de todas las Comunidades han sido eliminados." });
+        const miembros = await Miembro.destroy({
+            where: {}
+        });
+        res.send({
+            message: `Se eliminaron ${miembros} Miembros.`
         });
     } catch (error) {
-        res.send(error);
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al eliminar los Miembros',
+        });
     }
-}
+};
 
-// Función de eliminar un Miembro por ID.
+// Función de eliminar un Miembro por ID de usuario y de comunidad solamente.
 MiembroController.borrarMiembroId = async (req, res) => {
-    let id = req.params.id;
     try {
-        Miembro.findOne({
-            where: { id: id },
-        }).then(miembro => {
-            if (miembro) {
-                miembro.destroy({
-                    truncate: false
-                })
-                res.status(200).json({ msg: `La Miembro con el id ${id} a sido eliminado.` });
-            } else {
-                res.status(404).json({ msg: `El Miembro con el id ${id} No existe` })
-            }
+        const miembro = await Miembro.findByPk(req.params.id);
+        if (!miembro) {
+            return res.status(400).send({
+                message: 'El Miembro no existe'
+            });
+        }
+        const miembroEliminado = await miembro.destroy();
+        res.send({
+            message: `El Miembro con el nick ${miembro.nick} a sido Eliminado.`,
+            miembroEliminado
         });
     } catch (error) {
-        res.send(error);
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al eliminar el Miembro',
+        });
     }
-}
+};
 
 module.exports = MiembroController;
