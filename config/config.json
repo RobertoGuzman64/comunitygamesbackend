@@ -1,9 +1,9 @@
 {
     "development": {
-        "username": "b3b51d1ff80828",
-        "password": "cc00430e",
-        "database": "heroku_58552391d669e7a",
-        "host": "eu-cdbr-west-02.cleardb.net",
+        "username": "m35dpgpufrisb0gj",
+        "password": "rw0mw3q5oxpwsef7",
+        "database": "voxbpl5pkirb44bf",
+        "host": "j5zntocs2dn6c3fj.chr7pe7iynqr.eu-west-1.rds.amazonaws.com",
         "dialect": "mysql"
     },
     "test": {
@@ -14,10 +14,10 @@
         "dialect": "mysql"
     },
     "production": {
-        "username": "b3b51d1ff80828",
-        "password": "cc00430e",
-        "database": "heroku_58552391d669e7a",
-        "host": "eu-cdbr-west-02.cleardb.net",
+        "username": "m35dpgpufrisb0gj",
+        "password": "rw0mw3q5oxpwsef7",
+        "database": "voxbpl5pkirb44bf",
+        "host": "j5zntocs2dn6c3fj.chr7pe7iynqr.eu-west-1.rds.amazonaws.com",
         "dialect": "mysql"
     }
 }
