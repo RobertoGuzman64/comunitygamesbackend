@@ -19,17 +19,17 @@ router.get('/:id', auth, MensajeController.verMensajeId);
 router.get('/comunidad/:id', auth, MensajeController.verMensajesComunidadId);
 // http://localhost:5000/mensajes/comunidad/id
 
-// Endpoint de crear un Mensaje como Miembro a una Comunidad.
+// Endpoint de crear un Mensaje.
 router.post('/', auth, MensajeController.crearMensaje);
-// http://localhost:5000/mensajes/miembro
+// http://localhost:5000/mensajes
 
-// Endpoint de modificar un Mensaje de un Miembro de Comunidad.
-router.put('/miembro/:id', auth, MensajeController.modificarMensajeId);
-// http://localhost:5000/mensajes/miembro/:id
+// Endpoint de modificar un Mensaje.
+router.put('/:id', auth, MensajeController.modificarMensajeId);
+// http://localhost:5000/mensajes/:id
 
-// Endpoint de eliminar un Mensaje de un Miembro de Comunidad.
-router.delete('/miembro/:id', auth, MensajeController.borrarMensajeId);
-// http://localhost:5000/mensajes/miembro/:id
+// Endpoint de eliminar un Mensaje por ID.
+router.delete('/:id', auth, MensajeController.borrarMensajeId);
+// http://localhost:5000/mensajes/:id
 
 // Endpoint de eliminar todos los Mensajes.
 router.delete('/', auth, isAdmin, MensajeController.borrarMensajes);
