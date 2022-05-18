@@ -19,9 +19,13 @@ router.get('/:id', auth, isAdmin, MiembroController.verMiembroId);
 router.get('/comunidad/:id', auth, MiembroController.verMiembrosComunidadId);
 // http://localhost:5000/miembros/comunidad/id
 
+// Endpoint de ver los Miembros de un Usuario por ID.
+router.get('/usuario/:id', auth, MiembroController.verMiembrosUsuarioId);
+// http://localhost:5000/miembros/usuario/:id
+
 // Endpoint de crear un Miembro.
 router.post('/', auth, MiembroController.crearMiembro);
-// http://localhost:5000/comunidades
+// http://localhost:5000/miembros
 
 // Endpoint de Modificar los datos del Miembro por ID.
 router.put('/:id', auth, MiembroController.modificarMiembroId);

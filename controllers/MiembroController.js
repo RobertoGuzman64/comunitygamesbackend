@@ -44,6 +44,27 @@ MiembroController.verMiembrosComunidadId = async (req, res) => {
     }
 };
 
+// Función de ver los Miembros de una Comunidad por ID de usuario con inner join para ver el nombre de la comunidad.
+MiembroController.verMiembrosUsuarioId = async (req, res) => {
+    try {
+        const miembros = await Miembro.findAll({
+            where: {
+                usuario_id: req.params.id
+            },
+            include: [{
+                model: Comunidad,
+                attributes: ['nombre']
+            }]
+        });
+        res.send(miembros);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            message: 'Error al mostrar los Miembros',
+        });
+    }
+};
+
 // Función de crear un Miembro de la Comunidad.
 MiembroController.crearMiembro = async (req, res) => {
     try {
