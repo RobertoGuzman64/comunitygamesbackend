@@ -19,7 +19,7 @@ router.get('/:id', auth, isAdmin, MiembroController.verMiembroId);
 router.get('/comunidad/:id', auth, MiembroController.verMiembrosComunidadId);
 // http://localhost:5000/miembros/comunidad/id
 
-// Endpoint de ver los Miembros de un Usuario por ID.
+// Endpoint de ver los Miembros de un Usuario y el titulo de la Comunidad.
 router.get('/usuario/:id', auth, MiembroController.verMiembrosUsuarioId);
 // http://localhost:5000/miembros/usuario/:id
 

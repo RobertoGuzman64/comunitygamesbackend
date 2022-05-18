@@ -1,4 +1,5 @@
 const { Miembro } = require('../models/index');
+const { Comunidad } = require('../models/index');
 const MiembroController = {};
 
 // Función de mostrar todos los Miembros.
@@ -44,7 +45,7 @@ MiembroController.verMiembrosComunidadId = async (req, res) => {
     }
 };
 
-// Función de ver los Miembros de una Comunidad por ID de usuario con inner join para ver el nombre de la comunidad.
+// Función de ver los Miembros de un Usuario y el titulo de la Comunidad.
 MiembroController.verMiembrosUsuarioId = async (req, res) => {
     try {
         const miembros = await Miembro.findAll({
@@ -53,8 +54,7 @@ MiembroController.verMiembrosUsuarioId = async (req, res) => {
             },
             include: [{
                 model: Comunidad,
-                as: 'comunidad',
-                attributes: ['nombre']
+                attributes: ['titulo']
             }]
         });
         res.send(miembros);
@@ -144,7 +144,7 @@ MiembroController.borrarMiembros = async (req, res) => {
     }
 };
 
-// Función de eliminar un Miembro por ID de usuario y de comunidad solamente.
+// Función de eliminar un Miembro por ID.
 MiembroController.borrarMiembroId = async (req, res) => {
     try {
         const miembro = await Miembro.findByPk(req.params.id);
