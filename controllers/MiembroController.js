@@ -53,6 +53,7 @@ MiembroController.verMiembrosUsuarioId = async (req, res) => {
             },
             include: [{
                 model: Comunidad,
+                as: 'comunidad',
                 attributes: ['nombre']
             }]
         });
